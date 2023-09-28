@@ -45,7 +45,17 @@ final class TaskListViewController: UITableViewController {
         var content = cell.defaultContentConfiguration()
         let taskList = taskLists[indexPath.row]
         content.text = taskList.title
-        content.secondaryText = taskList.tasks.count.formatted()
+        
+        let taskListIsNotEmpty = !taskList.tasks.isEmpty
+        let activeTaskListIsEmpty = taskList.tasks.filter { !$0.isComplete } .isEmpty
+        let activeTasksCount = taskList.tasks.filter { !$0.isComplete } .count.formatted()
+        content.secondaryText = taskListIsNotEmpty && activeTaskListIsEmpty
+        ? "✓"
+        : activeTasksCount
+        content.secondaryTextProperties.color = taskListIsNotEmpty && activeTaskListIsEmpty
+        ? UIColor.systemGreen
+        : UIColor.lightGray
+        
         cell.contentConfiguration = content
         return cell
     }

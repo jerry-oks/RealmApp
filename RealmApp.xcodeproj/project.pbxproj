@@ -91,7 +91,7 @@
 				A8969B34270F34C900F7DED0 /* Services */,
 				A8C2C60628B626750073F613 /* Storyboards */,
 				A8C2C60828B626980073F613 /* App */,
-				A8C2C60728B6268C0073F613 /* Resurces */,
+				A8C2C60728B6268C0073F613 /* Resources */,
 			);
 			path = RealmApp;
 			sourceTree = "<group>";
@@ -122,12 +122,12 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
-		A8C2C60728B6268C0073F613 /* Resurces */ = {
+		A8C2C60728B6268C0073F613 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				A872A11520E9D82600ECE2BA /* Assets.xcassets */,
 			);
-			path = Resurces;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		A8C2C60828B626980073F613 /* App */ = {
