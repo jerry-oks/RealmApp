@@ -10,10 +10,13 @@ import UIKit
 import RealmSwift
 
 final class TaskListViewController: UITableViewController {
-
+    
+    @IBOutlet private var segmentedControl: UISegmentedControl!
+    
     private var taskLists: Results<TaskList>!
     private let storageManager = StorageManager.shared
     private let dataManager = DataManager.shared
+    private let userDefaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +31,9 @@ final class TaskListViewController: UITableViewController {
         
         createTempData()
         taskLists = storageManager.fetchData(TaskList.self)
+        segmentedControl.selectedSegmentIndex = userDefaults.integer(forKey: "sorting")
+        sort(by: userDefaults.integer(forKey: "sorting"))
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,8 +59,8 @@ final class TaskListViewController: UITableViewController {
         ? "✓"
         : activeTasksCount
         content.secondaryTextProperties.color = taskListIsNotEmpty && activeTaskListIsEmpty
-        ? UIColor.systemGreen
-        : UIColor.lightGray
+        ? #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+        : #colorLiteral(red: 0.6642268896, green: 0.6642268896, blue: 0.6642268896, alpha: 1)
         
         cell.contentConfiguration = content
         return cell
@@ -82,7 +88,7 @@ final class TaskListViewController: UITableViewController {
             isDone(true)
         }
         
-        editAction.backgroundColor = .orange
+        editAction.backgroundColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0.03921568627, alpha: 1)
         doneAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
         
         return UISwipeActionsConfiguration(actions: [doneAction, editAction, deleteAction])
@@ -95,8 +101,17 @@ final class TaskListViewController: UITableViewController {
         let taskList = taskLists[indexPath.row]
         tasksVC.taskList = taskList
     }
-
-    @IBAction func sortingList(_ sender: UISegmentedControl) {
+    
+    @IBAction func sortList(_ sender: UISegmentedControl) {
+        sort(by: sender.selectedSegmentIndex)
+        userDefaults.set(sender.selectedSegmentIndex, forKey: "sorting")
+        UIView.transition(
+            with: tableView,
+            duration: 0.15,
+            options: [.transitionCrossDissolve, .curveEaseInOut]
+        ) { [unowned self] in
+            tableView.reloadData()
+        }
     }
     
     @objc private func addButtonPressed() {
@@ -109,6 +124,15 @@ final class TaskListViewController: UITableViewController {
                 UserDefaults.standard.setValue(true, forKey: "done")
                 tableView.reloadData()
             }
+        }
+    }
+    
+    private func sort(by key: Int) {
+        switch key {
+        case 1:
+            taskLists = taskLists.sorted(byKeyPath: "title", ascending: true)
+        default:
+            taskLists = taskLists.sorted(byKeyPath: "date", ascending: false)
         }
     }
 }

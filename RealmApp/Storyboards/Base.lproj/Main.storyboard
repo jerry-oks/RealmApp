@@ -23,7 +23,7 @@
                                 <segment title="A-Z"/>
                             </segments>
                             <connections>
-                                <action selector="sortingList:" destination="qX0-tw-d0x" eventType="valueChanged" id="1YQ-bZ-RKp"/>
+                                <action selector="sortList:" destination="qX0-tw-d0x" eventType="valueChanged" id="1YQ-bZ-RKp"/>
                             </connections>
                         </segmentedControl>
                         <prototypes>
@@ -61,6 +61,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Task Lists" id="ERy-3e-wHR"/>
+                    <connections>
+                        <outlet property="segmentedControl" destination="BwU-4V-6Nw" id="dDu-Ng-KJz"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ruz-0V-qZ4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
