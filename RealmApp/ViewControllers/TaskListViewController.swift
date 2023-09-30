@@ -103,6 +103,7 @@ final class TaskListViewController: UITableViewController {
         
         return UISwipeActionsConfiguration(actions: [doneAction])
     }
+        
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let indexPath = tableView.indexPathForSelectedRow else { return }
@@ -137,12 +138,10 @@ final class TaskListViewController: UITableViewController {
     }
     
     private func sort(by key: Int) {
-        switch key {
-        case 1:
-            taskLists = taskLists.sorted(byKeyPath: "title", ascending: true)
-        default:
-            taskLists = taskLists.sorted(byKeyPath: "date", ascending: false)
-        }
+        taskLists = taskLists.sorted(
+            byKeyPath: key == 1 ? "title" : "date",
+            ascending: key == 1 ? true : false
+        )
     }
 }
 

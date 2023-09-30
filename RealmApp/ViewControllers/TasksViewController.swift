@@ -60,6 +60,15 @@ final class TasksViewController: UITableViewController {
     }
     
     // MARK: - UITableViewDelegate
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let task = indexPath.section == 0
+        ? currentTasks[indexPath.row]
+        : completedTasks [indexPath.row]
+        showAlert(with: task) {
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let task = indexPath.section == 0
         ? currentTasks[indexPath.row]
@@ -132,7 +141,10 @@ extension TasksViewController {
                 }
                 self.save(task: taskTitle, withNote: taskNote)
             }
-            .addAction(title: "Cancel", style: .destructive)
+            .addAction(title: "Cancel", style: .destructive) { [unowned self] _,_ in
+                guard let indexPath = tableView.indexPathForSelectedRow else { return }
+                self.tableView.deselectRow(at: indexPath, animated: true)                
+            }
             .build()
         
         present(alert, animated: true)
