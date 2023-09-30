@@ -94,7 +94,7 @@ final class TaskListViewController: UITableViewController {
 
         let doneAction = UIContextualAction(style: .normal, title: "") { [unowned self] _, _, isDone in
             storageManager.done(taskList)
-            tableView.reloadRows(at: [indexPath], with: .automatic)
+            tableView.reconfigureRows(at: [indexPath])
             isDone(true)
         }
         
